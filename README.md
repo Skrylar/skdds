@@ -3,12 +3,14 @@ NOTE: Does not recognize or support volumetric and cube map textures. It will be
 # Querying
 
 `proc base_width*(self: DdsReader): int`
+
 `proc base_height*(self: DdsReader): int`
 
 Returns the *base* width or height of the image file. This does not change with the image's current mipmap level.
 
-`proc base_width*(self: DdsReader): int`
-`proc base_height*(self: DdsReader): int`
+`proc width*(self: DdsReader): int`
+
+`proc height*(self: DdsReader): int`
 
 Returns the *current* width or height of the image. As smaller mipmap levels are encountered, this size shrinks progressivey.
 
