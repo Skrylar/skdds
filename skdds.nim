@@ -8,15 +8,20 @@ const
   DdsMagic* = make_fourcc('D', 'D', 'S', ' ')
 
 type
-  DdsFourCCs* = enum
-    fccDx10 = make_fourcc('D', 'X', '1', '0') ## Is a newer, DX10 version of the DDS format.
-    fccDxt1 = make_fourcc('D', 'X', 'T', '1') ## RGB compression, with optional bitonal alpha channels.
-    fccDxt2 = make_fourcc('D', 'X', 'T', '2') ## RGBA compression, premultiplied by alpha. Explicit alpha channels.
-    fccDxt3 = make_fourcc('D', 'X', 'T', '3') ## RGBA compression, which is NOT premultiplied. Explicit alpha channels.
-    fccDxt4 = make_fourcc('D', 'X', 'T', '4') ## RGBA compression, premultiplied by alpha. Implicit alpha channels.
-    fccDxt5 = make_fourcc('D', 'X', 'T', '5') ## RGBA compression, which is NOT premultiplied. Implicit alpha channels.
-    fccBc5 = make_fourcc('A', '2', 'X', 'Y') ## XY compression; for normal maps, where the Z is discarded and X/Y are encoded independently.
+  DdsFourCC* = distinct uint32
+const
+  fccBc5* = make_fourcc('A', '2', 'X', 'Y').DdsFourCC ## XY compression; for normal maps, where the Z is discarded and X/Y are encoded independently.
+  fccDx10* = make_fourcc('D', 'X', '1', '0').DdsFourCC ## Is a newer, DX10 version of the DDS format.
+  fccDxt1* = make_fourcc('D', 'X', 'T', '1').DdsFourCC ## RGB compression, with optional bitonal alpha channels.
+  fccDxt2* = make_fourcc('D', 'X', 'T', '2').DdsFourCC ## RGBA compression, premultiplied by alpha. Explicit alpha channels.
+  fccDxt3* = make_fourcc('D', 'X', 'T', '3').DdsFourCC ## RGBA compression, which is NOT premultiplied. Explicit alpha channels.
+  fccDxt4* = make_fourcc('D', 'X', 'T', '4').DdsFourCC ## RGBA compression, premultiplied by alpha. Implicit alpha channels.
+  fccDxt5* = make_fourcc('D', 'X', 'T', '5').DdsFourCC ## RGBA compression, which is NOT premultiplied. Implicit alpha channels.
 
+template `==`*(a, b: DdsFourCC): bool =
+  return a.uint32 == b.uint32
+
+type
   DdsPixelFormatFlag* = enum
     DDPF_ALPHA_PIXELS = 0x1 ## Texture includes an alpha channel.
     DDPF_ALPHA        = 0x2 ## Only alpha information is present.
@@ -74,9 +79,9 @@ type
     unused_caps: array[0..1, uint32]
     reserved2: uint32
 
-template contains*(format: RawDdsPixelFormat; fcc: DdsFourCCs): bool =
+template contains*(format: RawDdsPixelFormat; fcc: DdsFourCC): bool =
   ## Type-safe way to check if format matches a FourCC code.
-  format.fourcc == fcc.ord
+  format.fourcc == fcc.uint32
 
 template contains*(format: RawDdsPixelFormat; flag: DdsPixelFormatFlag): bool =
   ## Type-safe way to check if a format flag is in a pixel format.
@@ -163,7 +168,7 @@ proc size*(self: DdsReader): int =
 
   # XXX only true for compressed formats
   let m = if fccDxt1 in self.header.pixelformat: 8 else: 16
- 
+
   max(self.header.pitch_or_linear_size.int shr (self.current_mip shl 1), m)
 
 proc width*(self: DdsReader): int {.inline.} =
@@ -319,4 +324,3 @@ when isMainModule:
       check dds.channel_count == 3
 
       check dds.skip(f) == false
-
