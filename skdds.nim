@@ -2,7 +2,7 @@
 import math
 
 template make_fourcc(a, b, c, d: char): uint32 =
-  (d.uint8 shl 24) + (c.uint8 shl 16) + (b.uint8 shl 8) + a.uint8
+  (d.uint32 shl 24).uint32 + (c.uint32 shl 16).uint32 + (b.uint32 shl 8).uint32 + a.uint32
 
 const
   DdsMagic* = make_fourcc('D', 'D', 'S', ' ')
@@ -19,7 +19,7 @@ const
   fccDxt5* = make_fourcc('D', 'X', 'T', '5').DdsFourCC ## RGBA compression, which is NOT premultiplied. Implicit alpha channels.
 
 template `==`*(a, b: DdsFourCC): bool =
-  return a.uint32 == b.uint32
+  a.uint32 == b.uint32
 
 type
   DdsPixelFormatFlag* = enum
