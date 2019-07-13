@@ -1,3 +1,8 @@
+
+# 2019
+
+Yup. It works in Nim 0.20.
+
 NOTE: Does not recognize or support volumetric and cube map textures. It will be confused by them and read garbage.
 
 # Querying
@@ -42,4 +47,3 @@ NOTE: DDS reader will not *decode* texel information. When reading compressed te
 `proc skip*(self: var DdsReader; f: File): bool`
 
 Skips the current surface and/or mipmap level. Will seek forward in the file by the size of the image block. Returns `true` if skipping was successful. Skipping fails when the end of file is reached, such as the final mipmap in a mipmapped texture.
-
