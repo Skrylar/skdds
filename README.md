@@ -3,7 +3,20 @@
 
 Yup. It works in Nim 0.20.
 
-NOTE: Does not recognize or support volumetric and cube map textures. It will be confused by them and read garbage.
+Nope:
+
+ - Volumetric textures.
+ - Cube maps.
+
+   I don't have test textures for these.
+
+ - Images with widths or heights that are not powers of two.
+
+   Makes the math inconvenient, and GPUs should be fed textures with powers of two anyway.
+
+ - Uncompressed textures.
+
+   Anything which is not one of the usual DX-something codes (so, DXT compression) will be rejected as an unsupported file. Uncompressed formats are more complicated and application specific, and there are better formats for storing those (PNG, FLIF, WebP.)
 
 # Querying
 
