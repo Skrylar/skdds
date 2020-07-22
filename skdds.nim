@@ -281,7 +281,7 @@ when isMainModule:
       var f: File
       var dds: DdsReader
 
-      check f.open("test/lenna-mipmap-dxt1.dds", fmRead) == true
+      check f.open("t/lenna-mipmap-dxt1.dds", fmRead) == true
       check dds.init(f) == true
       check dds.base_width == 512
       check dds.base_height == 512
@@ -299,7 +299,7 @@ when isMainModule:
       var bytes: seq[uint8]
       newSeq(bytes, 0)
 
-      check f.open("test/lenna-mipmap-dxt1.dds", fmRead) == true
+      check f.open("t/lenna-mipmap-dxt1.dds", fmRead) == true
       check dds.init(f) == true
       check dds.base_width == 512
       check dds.base_height == 512
@@ -316,7 +316,7 @@ when isMainModule:
       var f: File
       var dds: DdsReader
 
-      check f.open("test/lenna-nomipmap-dxt1.dds", fmRead) == true
+      check f.open("t/lenna-nomipmap-dxt1.dds", fmRead) == true
       check dds.init(f) == true
       check dds.base_width == 512
       check dds.base_height == 512
